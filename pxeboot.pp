@@ -72,7 +72,7 @@ file { "/etc/exports":
 	content => "
 /nfsroot	192.168.10.0/24(rw,no_root_squash,async,insecure,fsid=0,nohide)
 /nfsroot/bin	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
-/nfsroot/etc	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
+/nfsroot/home	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/lib	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/sbin	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/usr	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
