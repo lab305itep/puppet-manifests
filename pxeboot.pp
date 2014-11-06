@@ -51,9 +51,9 @@ MENU TITLE PXE Menu
 
 LABEL linux
 	MENU DEFAULT
-	MENU LABEL Ubuntu, with Linux 3.13.0-32-generic
+	MENU LABEL Ubuntu, with Linux $kernelrelease
 	KERNEL vmlinuz-$kernelrelease
-	APPEND boot=nfs root=/dev/nfs initrd=initrd.img-$kernelrelease nfsroot=192.168.10.188:/nfsroot,rw,nolock ip=dhcp rw
+	APPEND boot=nfs root=/dev/nfs initrd=initrd.img-$kernelrelease nfsroot=192.168.10.77:/nfsroot,rw,nolock ip:eth0=dhcp rw
 ",
 }
 
