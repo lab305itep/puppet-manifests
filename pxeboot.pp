@@ -82,6 +82,41 @@ file { "/etc/exports":
 	notify  => Exec["refresh_exports"],
 }
 
+Mount {
+	ensure	=> 'mounted',
+	atboot	=> yes,
+	fstype	=> "none",
+	options	=> "bind",
+}
+
+mount { "/nfsroot/bin":
+	device	=> "/bin",
+}
+
+mount { "/nfsroot/etc/alternatives":
+	device	=> "/etc/alternatives",
+}
+
+mount { "/nfsroot/home":
+	device	=> "/home",
+}
+
+mount { "/nfsroot/lib":
+	device	=> "/lib",
+}
+
+mount { "/nfsroot/root":
+	device	=> "/root",
+}
+
+mount { "/nfsroot/sbin":
+	device	=> "/sbin",
+}
+
+mount { "/nfsroot/usr":
+	device	=> "/usr",
+}
+
 file { "/var/lib/tftpboot/initrd.img-$kernelrelease":
 	ensure  => present,
 	mode    => 0644,
