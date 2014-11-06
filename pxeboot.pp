@@ -73,6 +73,8 @@ file { "/etc/exports":
 /nfsroot	192.168.10.0/24(rw,no_root_squash,async,insecure,fsid=0,nohide)
 /nfsroot/bin	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/etc/alternatives	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
+/nfsroot/var/lib/apt	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
+/nfsroot/var/lib/dpkg	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/home	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/lib	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/root	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
@@ -95,6 +97,14 @@ mount { "/nfsroot/bin":
 
 mount { "/nfsroot/etc/alternatives":
 	device	=> "/etc/alternatives",
+}
+
+mount { "/nfsroot/var/lib/apt":
+	device	=> "/var/lib/apt",
+}
+
+mount { "/nfsroot/var/lib/dpkg":
+	device	=> "/var/lib/dpkg",
 }
 
 mount { "/nfsroot/home":
