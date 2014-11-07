@@ -66,15 +66,179 @@ exec { "refresh_exports":
 	path    => "/usr/sbin/"
 }
 
+# SYMLINKS
+
+file { "/etc/mtab":
+	require => File["/var/etc/mtab"],
+	ensure	=> "link",
+	target	=> "../var/etc/mtab",
+}
+
+file { "/etc/fstab":
+	require => File["/var/etc/fstab"],
+	ensure  => "link",
+	target  => "../var/etc/fstab",
+}
+
+file{ "/etc/hostname":
+	require	=> File["/var/etc/hostname"],
+	ensure	=> "link",
+	target	=> "../var/etc/hostname",
+}
+
+file{ "/etc/network/interfaces":
+	require	=> File["/var/etc/network/interfaces"],
+	ensure	=> "link",
+	target	=> "../../../var/etc/network/interfaces",
+}
+
+file{ "/etc/rc0.d":
+	require	=> File["/var/etc/rc0.d"],
+	ensure	=> "link",
+	target	=> "../var/etc/rc0.d",
+}
+
+file{ "/etc/rc1.d":
+	require	=> File["/var/etc/rc1.d"],
+	ensure	=> "link",
+	target	=> "../var/etc/rc1.d",
+}
+
+file{ "/etc/rc2.d":
+	require	=> File["/var/etc/rc2.d"],
+	ensure	=> "link",
+	target	=> "../var/etc/rc2.d",
+}
+
+file{ "/etc/rc3.d":
+	require	=> File["/var/etc/rc3.d"],
+	ensure	=> "link",
+	target	=> "../var/etc/rc3.d",
+}
+
+file{ "/etc/rc4.d":
+	require	=> File["/var/etc/rc4.d"],
+	ensure	=> "link",
+	target	=> "../var/etc/rc4.d",
+}
+
+file{ "/etc/rc5.d":
+	require	=> File["/var/etc/rc5.d"],
+	ensure	=> "link",
+	target	=> "../var/etc/rc5.d",
+}
+
+file{ "/etc/rc6.d":
+	require	=> File["/var/etc/rc6.d"],
+	ensure	=> "link",
+	target	=> "../var/etc/rc6.d",
+}
+
+# SERVER'S /var/etc/
+
+file { "/var/etc/mtab":
+	ensure	=> "present",
+}
+
+file { "/var/etc/fstab":
+	content	=> file("/etc/fstab"),
+}
+
+file { "/var/etc/hostname":
+	content	=> "kserver",
+}
+
+file { "/var/etc/network/interfaces":
+	ensure	=> "exists",
+#	content	=> file("/etc/network/interfaces"),
+}
+
+file { "/var/etc/network":
+	ensure	=> "directory",
+}
+
+file { "/var/etc":
+	ensure	=> "directory",
+}
+
+file { "/var/etc/rc0.d":
+	ensure	=> "directory",
+}
+
+file { "/var/etc/rc1.d":
+	ensure	=> "directory",
+}
+
+file { "/var/etc/rc2.d":
+	ensure	=> "directory",
+}
+
+file { "/var/etc/rc3.d":
+	ensure	=> "directory",
+}
+
+file { "/var/etc/rc4.d":
+	ensure	=> "directory",
+}
+
+file { "/var/etc/rc5.d":
+	ensure	=> "directory",
+}
+
+file { "/var/etc/rc6.d":
+	ensure	=> "directory",
+}
+
+# make sure that symlinks in /etc/rcN.d are working
+file { "/var/etc/init.d":
+	ensure	=> "link",
+	target	=> "../../etc/init.d",
+}
+
+# CLIENT'S /nfsroot/var/etc/
+
+file { "/nfsroot/var/etc/hostname":
+	content	=> "",
+}
+
+file { "/nfsroot/var/etc/network/interfaces":
+	content	=> "
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+",
+}
+
+file { "/nfsroot/var/etc/network":
+	ensure	=> "directory"
+}
+
+file { "/nfsroot/var/etc":
+	ensure	=> "directory"
+}
+
+# make sure that symlinks in /etc/rcN.d are working
+file { "/nfsroot/var/etc/init.d":
+	ensure	=> "link",
+	target	=> "../../etc/init.d",
+}
+
 file { "/etc/exports":
 	ensure  => present,
 	mode    => 0644,
 	content => "
 /nfsroot	192.168.10.0/24(rw,no_root_squash,async,insecure,fsid=0,nohide)
 /nfsroot/bin	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
-/nfsroot/etc/alternatives	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
+/nfsroot/etc	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/var/lib/apt	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/var/lib/dpkg	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
+/nfsroot/var/lib/update-notifier	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/home	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/lib	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
 /nfsroot/root	192.168.10.0/24(rw,no_root_squash,async,insecure,nohide)
@@ -95,8 +259,8 @@ mount { "/nfsroot/bin":
 	device	=> "/bin",
 }
 
-mount { "/nfsroot/etc/alternatives":
-	device	=> "/etc/alternatives",
+mount { "/nfsroot/etc":
+	device	=> "/etc",
 }
 
 mount { "/nfsroot/var/lib/apt":
@@ -105,6 +269,14 @@ mount { "/nfsroot/var/lib/apt":
 
 mount { "/nfsroot/var/lib/dpkg":
 	device	=> "/var/lib/dpkg",
+}
+
+mount { "/nfsroot/var/lib/update-notifier":
+	device	=> "/var/lib/update-notifier",
+}
+
+file { "/nfsroot/var/lib/update-notifier":
+	ensure	=> "directory",
 }
 
 mount { "/nfsroot/home":
